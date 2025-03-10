@@ -74,8 +74,8 @@ const booksController = {
     // Get Books By Author
     getBooksByAuthor: async (req, res) => {
         try {
-            const {author} = req.body;
-            if(!author){
+            const { author } = req.body;
+            if (!author) {
                 return res.status(400).json({
                     success: false,
                     statusCode: 400,
@@ -83,7 +83,7 @@ const booksController = {
                     data: null
                 });
             }
-            const books = await Book.find({author});
+            const books = await Book.find({ author });
             res.status(200).json({
                 success: true,
                 statusCode: 200,
@@ -103,8 +103,8 @@ const booksController = {
     // Update Books By Title (Price and Stock)
     updateBooks: async (req, res) => {
         try {
-            const {price,stock,title} = req.body;
-            if(!price){
+            const { price, stock, title } = req.body;
+            if (!price) {
                 return res.status(400).json({
                     success: false,
                     statusCode: 400,
@@ -112,7 +112,7 @@ const booksController = {
                     data: null
                 });
             }
-            if(!stock){
+            if (!stock) {
                 return res.status(400).json({
                     success: false,
                     statusCode: 400,
@@ -120,7 +120,7 @@ const booksController = {
                     data: null
                 });
             }
-            if(!title){
+            if (!title) {
                 return res.status(400).json({
                     success: false,
                     statusCode: 400,
@@ -152,8 +152,8 @@ const booksController = {
     // Delete Book By Title 
     deleteBooks: async (req, res) => {
         try {
-            const {title} = req.body;
-            if(!title){
+            const { title } = req.body;
+            if (!title) {
                 return res.status(400).json({
                     success: false,
                     statusCode: 400,
@@ -202,7 +202,46 @@ const booksController = {
             });
         }
     },
-
+    // Counting the number of Books in the collection
+    getCountOfBooks: async (req, res) => {
+        try {
+            const books = await Book.find();
+            res.status(200).json({
+                success: true,
+                statusCode: 200,
+                message: 'Books count retrieved successfully',
+                count: books.length,
+                // data: books
+            });
+        } catch (err) {
+            res.status(500).json({
+                success: false,
+                statusCode: 500,
+                message: 'Server error',
+                error: err.message
+            });
+        }
+    },
+    // Sort Books by price ascending order
+    sortBooksbyPrice: async (req, res) => {
+        try {
+            const books = await Book.find().sort({ price: 1 });
+            res.status(200).json({
+                success: true,
+                statusCode: 200,
+                message: 'Books sorted successfully',
+                count: books.length,
+                data: books
+            });
+        } catch (err) {
+            res.status(500).json({
+                success: false,
+                statusCode: 500,
+                message: 'Server error',
+                error: err.message
+            });
+        }
+    },
 };
 
 module.exports = booksController;
